@@ -1,0 +1,38 @@
+body {
+    background-color: #333333;
+}
+button {
+    border-radius: 0px;
+    background-color: ButtonFace;
+    border: 2px outset ThreeDLightShadow !important;
+}
+#items button {
+    display: inline-block;
+    width: 20px;
+    padding: 0px;
+    height: 24px !important;
+    text-align: center;
+}
+.stacked {
+    margin-left: 15px;
+}
+div[stack="true"] {
+}
+#items div {
+    margin-bottom: 3px;
+    border: 1px solid white;
+    width: 200px;
+    color: #ffffff;
+    padding-left: 2px;
+    padding-bottom: 2px;
+}
+#items input, #items select {
+    width: 125px;
+    border-radius: 0;
+    height: 20px !important;
+    border: 0px;
+}
+p {
+    margin-top: 1px;
+    margin-bottom: 2px;
+}

@@ -1,0 +1,63 @@
+body {
+    background-color: #333333;
+}
+button {
+    border-radius: 0;
+    background-color: ButtonFace;
+    border: 2px outset ThreeDLightShadow !important;
+    padding: 0;
+    height: 24px;
+    text-align: center;
+}
+#table button {
+    left: 0;
+    position: relative;
+}
+#menu button {
+    display: inline-block;
+    width: 200px;
+}
+.delete, .confirm, .add {
+    display: inline;
+    width: 40px;
+}
+.confirm {
+    right: 0 !important;
+}
+#menu_div {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    border: white solid 1px;
+}
+#menu {
+    width: 100%;
+}
+#menu td {
+    text-align: center;
+}
+#table_div {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow-x: scroll;
+    overflow-y: scroll;
+    border: white solid 1px;
+}
+#headers td {
+    font-weight: bold;
+    text-align: center;
+}
+#table td {
+    border: white solid 1px;
+    padding: 5px;
+    color: white;
+    width: max-content;
+}
+#table input {
+    width: 100px;
+    border-radius: 0;
+    height: 20px !important;
+    border: 0;
+    display: inline;
+}

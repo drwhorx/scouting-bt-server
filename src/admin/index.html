@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script>var socket = io('http://localhost');</script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/data.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <title>Scouting Admin Portal</title>
+</head>
+<body>
+<div id="menu_div">
+    <table id="menu">
+        <tr>
+            <td>
+                <button onclick="uploadColumns()">Upload New Columns</button>
+            </td>
+            <td>
+                <button onclick="getData()">Get Data</button>
+            </td>
+            <td>
+                <button onclick="resetData()">Reset Data</button>
+            </td>
+            <td>
+                <button>Save Data</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="table_div">
+    <table>
+        <tbody id="table">
+            <tr id="headers"></tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
