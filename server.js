@@ -1,18 +1,20 @@
 var fs = require("fs");
-
 var mysql = require('mysql2/promise');
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+const args = process.argv;
+
 var conn = mysql.createPool({
     host: 'localhost',
-    user: '5530',
-    password: 'larry',
+    user: args[0],
+    password: args[1],
     database: 'SCOUTING_DATA'
 });
 
 app.use(express.static('./src'));
+
 app.get('/', function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Request-Method', '*');
@@ -21,6 +23,7 @@ app.get('/', function (req, res, next) {
 
     res.sendFile(__dirname + '/src/index.html');
 });
+
 app.get('/admin', function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Request-Method', '*');
@@ -29,6 +32,7 @@ app.get('/admin', function (req, res, next) {
 
     res.sendFile(__dirname + '/src/admin/index.html');
 });
+
 io.on('connection', function (socket) {
     console.log("connected");
     socket.on('receive', (data) => {
