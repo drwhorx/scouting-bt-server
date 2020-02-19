@@ -19,6 +19,36 @@ function uploadColumns() {
     socket.emit("upload", columns);
 }
 
+function saveData() {
+    let conf = confirm("Are you sure you want to save new data?");
+    if (!conf) return;
+    let titles = Array.from(document.getElementById("headers").children).filter(item => item.innerText != "");
+    let rows = Array.from(document.getElementById("table").children).filter(item => item.id != "headers");
+    let data = [];
+    for (let r = 0; r < rows.length - 1; r++) {
+        let row = rows[r];
+        let values = Array.from(row.children).filter(item => !item.classList.contains("del"));
+        let obj = {};
+        let valid = (title, value) => {
+            let obj = table.flatten().find(e => e.id == title);
+            if (!obj.optional && obj.type == "text" && value == "")
+                return false;
+            if (!obj.optional && obj.type == "number" && (isNaN(Number(value)) || value === ""))
+                return false;
+            return true;
+        };
+        let valids = values.map((e, i) => valid(e.innerText, titles[i]));
+        if (valids.contains(false))
+            return alert("Invalid datum at row " + r + " column " + valids.indexOf(false) + "!");
+        for (let i = 0; i < values.length; i++) {
+            obj[titles[i].innerText] = values[i].innerText;
+        }
+        data.push(obj);
+    }
+    socket.emit("save", data);
+    alert("Saved!");
+}
+
 function edit(element) {
     if (element.children.length > 0) return;
     let value = element.innerText;
@@ -49,9 +79,10 @@ function concur(element) {
 }
 
 function insertRow() {
-    let table = document.getElementById("table");
-    let row = table.insertRow(table.rows.length - 1);
+    let tbl = document.getElementById("table");
+    let row = tbl.insertRow(tbl.rows.length - 1);
     let del = row.insertCell();
+    del.classList.add("del");
     let button = document.createElement("button");
     let event = (function (item) {
         return {
@@ -62,9 +93,10 @@ function insertRow() {
     button.classList.add("delete");
     button.innerText = "X";
     del.appendChild(button);
-    let headers = document.getElementById("headers");
-    for (let i = 0; i < headers.children.length - 1; i++) {
+    let headers = document.getElementById("headers").children;
+    for (let i = 1; i < headers.length; i++) {
         let element = row.insertCell();
+        let obj = table.flatten().find(e => e.id == headers[i].innerText);
         let event = (function (item) {
             return {
                 call: (e) => {
@@ -74,6 +106,8 @@ function insertRow() {
             }
         })(element);
         $(element).click(event.call);
+        if (obj.type == "text") element.innerText = "null";
+        else if (obj.type == "number") element.innerText = "0";
     }
 }
 
@@ -125,6 +159,7 @@ function sort(element) {
     sessionStorage.setItem("lastSorted", index);
     sessionStorage.setItem("ascending", ascending);
 }
+
 function resetData() {
     let conf = confirm("Are you sure you want to erase all data?");
     if (!conf) return;
@@ -133,18 +168,26 @@ function resetData() {
     while (table.children.length > 2) {
         table.removeChild(table.children[1]);
     }
+    alert("Data reset!")
 }
+
 function getData() {
     socket.emit("get");
-    socket.on("catch", (data) => {
-        if (data.length == 0) return alert("No data");
-        let table = document.getElementById("table");
-        table.innerHTML = "<tr id=\"headers\"></tr>";
-        let headers = document.getElementById("headers");
-        headers.insertCell();
-        for (let title in data[0]) {
+}
+
+socket.on("catch", (data) => {
+    let table = document.getElementById("table");
+    table.innerHTML = "<tr id=\"headers\"></tr>";
+    let headers = document.getElementById("headers");
+    headers.insertCell();
+    if (data.headers) {
+        if (data.values.length == 0) {
+            socket.off("catch");
+            return alert("No Data");
+        }
+        for (let row of data.values) {
             let td = document.createElement("td");
-            td.innerText = title;
+            td.innerText = row.Field;
             headers.appendChild(td);
             let event = (function (item) {
                 return {
@@ -153,40 +196,58 @@ function getData() {
             })(td);
             td.onclick = event.call
         }
-        for (let row of data) {
-            let rowElement = table.insertRow();
-            let del = rowElement.insertCell();
-            let button = document.createElement("button");
-            let event = (function (item) {
-                return {
-                    call: () => deleteRow(item)
-                }
-            })(rowElement);
-            button.onclick = event.call;
-            button.classList.add("delete");
-            button.innerText = "X";
-            del.appendChild(button);
-            for (let item in row) {
-                let element = rowElement.insertCell();
-                element.innerText = row[item];
-                let event = (function (item) {
-                    return {
-                        call: (e) => {
-                            if (e.target !== item) return;
-                            edit(item);
-                        }
-                    }
-                })(element);
-                $(element).click(event.call);
-            }
-        }
         let button = document.createElement("button");
         button.onclick = insertRow;
         button.classList.add("add");
         button.innerText = "+";
-        table.insertRow().insertCell().appendChild(button);
-    })
-}
+        return table.insertRow().insertCell().appendChild(button);
+    }
+    for (let title in data[0]) {
+        let td = document.createElement("td");
+        td.innerText = title;
+        headers.appendChild(td);
+        let event = (function (item) {
+            return {
+                call: () => sort(item)
+            }
+        })(td);
+        td.onclick = event.call
+    }
+    for (let row of data) {
+        let rowElement = table.insertRow();
+        let del = rowElement.insertCell();
+        del.classList.add("del");
+        let button = document.createElement("button");
+        let event = (function (item) {
+            return {
+                call: () => deleteRow(item)
+            }
+        })(rowElement);
+        button.onclick = event.call;
+        button.classList.add("delete");
+        button.innerText = "X";
+        del.appendChild(button);
+        for (let item in row) {
+            let element = rowElement.insertCell();
+            element.innerText = row[item];
+            let event = (function (item) {
+                return {
+                    call: (e) => {
+                        if (e.target !== item) return;
+                        edit(item);
+                    }
+                }
+            })(element);
+            $(element).click(event.call);
+        }
+    }
+    let button = document.createElement("button");
+    button.onclick = insertRow;
+    button.classList.add("add");
+    button.innerText = "+";
+    table.insertRow().insertCell().appendChild(button);
+});
+
 window.onload = () => {
 
 };

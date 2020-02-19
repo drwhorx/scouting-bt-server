@@ -84,7 +84,7 @@ window.onload = function () {
 };
 
 function submit() {
-    let out = [];
+    let out = {};
     let data = $("[data='true']");
     for (let item of Array.from(data)) {
         let obj = converted.find(obj => obj.id == item.id);
@@ -96,7 +96,7 @@ function submit() {
             alert("Data entry for \"" + item.id + "\" is invalid!");
             return;
         }
-        out.push(item.value);
+        out[obj.id] = item.value;
     }
     socket.emit("receive", out);
     alert("Sent!");

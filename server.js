@@ -4,16 +4,16 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+require(__dirname + "/src/js/data");
 const args = process.argv;
-
 var conn = mysql.createPool({
     host: 'localhost',
-    user: args[0],
-    password: args[1],
+    user: args[2],
+    password: args[3],
     database: 'SCOUTING_DATA'
 });
 
-app.use(express.static('./src'));
+app.use(express.static(__dirname + '/src'));
 
 app.get('/', function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -35,8 +35,10 @@ app.get('/admin', function (req, res, next) {
 
 io.on('connection', function (socket) {
     console.log("connected");
-    socket.on('receive', (data) => {
-        console.log(data)
+    socket.on('receive', async (data) => {
+        let titles = "(`" + Object.keys(data).join("`, `") + "`)";
+        let values = "('" + Object.values(data).join("', '") + "')";
+        conn.query("INSERT INTO `SCOUTING_DATA` " + titles + "  VALUES " + values);
     });
     socket.on('upload', async (columns) => {
         await conn.execute("DROP TABLE `SCOUTING_DATA`");
@@ -53,10 +55,25 @@ io.on('connection', function (socket) {
     });
     socket.on("get", async () => {
         let results = (await conn.execute("SELECT * FROM SCOUTING_DATA"))[0];
-        socket.emit("catch", results)
+        if (results.length == 0) {
+            let headers = (await conn.execute("SHOW COLUMNS FROM SCOUTING_DATA"))[0];
+            results = {
+                "headers": true,
+                "values": headers
+            }
+        }
+        socket.emit("catch", results);
     });
     socket.on("clear", () => {
         conn.execute("DELETE FROM SCOUTING_DATA;");
+    });
+    socket.on("save", async data => {
+        await conn.execute("DELETE FROM SCOUTING_DATA;");
+        for (let datum of data) {
+            let titles = "(`" + Object.keys(datum).join("`, `") + "`)";
+            let values = "('" + Object.values(datum).join("', '") + "')";
+            conn.query("INSERT INTO `SCOUTING_DATA` " + titles + "  VALUES " + values);
+        }
     });
 });
 server.listen(80);

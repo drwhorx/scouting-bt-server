@@ -36,6 +36,11 @@ const table = [
                         "type": "number"
                     },
                     {
+                        "title": "Mid",
+                        "id": "auton_high_mid",
+                        "type": "number"
+                    },
+                    {
                         "title": "Trench",
                         "id": "auton_high_trench",
                         "type": "number"
@@ -43,28 +48,6 @@ const table = [
                     {
                         "title": "Far",
                         "id": "auton_high_far",
-                        "type": "number"
-                    },
-                ]
-            },
-            {
-                "title": "Inner Goal",
-                "id": "auton_inner",
-                "type": "stack",
-                "children": [
-                    {
-                        "title": "Near",
-                        "id": "auton_inner_near",
-                        "type": "number"
-                    },
-                    {
-                        "title": "Trench",
-                        "id": "auton_inner_trench",
-                        "type": "number"
-                    },
-                    {
-                        "title": "Far",
-                        "id": "auton_inner_far",
                         "type": "number"
                     },
                 ]
@@ -92,6 +75,11 @@ const table = [
                         "type": "number"
                     },
                     {
+                        "title": "Mid",
+                        "id": "teleop_high_mid",
+                        "type": "number"
+                    },
+                    {
                         "title": "Trench",
                         "id": "teleop_high_trench",
                         "type": "number"
@@ -102,30 +90,32 @@ const table = [
                         "type": "number"
                     },
                 ]
-            },
-            {
-                "title": "Inner Goal",
-                "id": "teleop_inner",
-                "type": "stack",
-                "children": [
-                    {
-                        "title": "Near",
-                        "id": "teleop_inner_near",
-                        "type": "number"
-                    },
-                    {
-                        "title": "Trench",
-                        "id": "teleop_inner_trench",
-                        "type": "number"
-                    },
-                    {
-                        "title": "Far",
-                        "id": "teleop_inner_far",
-                        "type": "number"
-                    },
-                ]
             }
         ]
+    },
+    {
+        "title": "Color Wheel: Spin Count",
+        "id": "spin_count",
+        "type": "opts",
+        "opts": ["No", "Yes"]
+    },
+    {
+        "title": "Color Wheel: Spin Control",
+        "id": "spin_control",
+        "type": "opts",
+        "opts": ["No", "Yes"]
+    },
+    {
+        "title": "Climb?",
+        "id": "break",
+        "type": "opts",
+        "opts": ["No", "Yes"]
+    },
+    {
+        "title": "Balance?",
+        "id": "break",
+        "type": "opts",
+        "opts": ["No", "Yes"]
     },
     {
         "title": "Break?",
@@ -140,3 +130,13 @@ const table = [
         "optional": true
     }
 ];
+table.flatten = () => {
+    let arr = [];
+    function recur(obj) {
+        if (!obj.children || obj.children.length == 0)
+            return arr.push(obj);
+        obj.children.forEach(recur);
+    }
+    table.forEach(recur);
+    return arr;
+};
