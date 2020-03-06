@@ -16,6 +16,12 @@ const table = [
         "opts": ["Red", "Blue"]
     },
     {
+        "title": "Auton Move?",
+        "id": "auton_move",
+        "type": "opts",
+        "opts": ["No", "Yes"]
+    },
+    {
         "title": "Auton",
         "id": "auton",
         "type": "stack",
@@ -48,6 +54,33 @@ const table = [
                     {
                         "title": "Far",
                         "id": "auton_high_far",
+                        "type": "number"
+                    },
+                ]
+            },
+            {
+                "title": "Inner Goal",
+                "id": "auton_inner",
+                "type": "stack",
+                "children": [
+                    {
+                        "title": "Near",
+                        "id": "auton_inner_near",
+                        "type": "number"
+                    },
+                    {
+                        "title": "Mid",
+                        "id": "auton_inner_mid",
+                        "type": "number"
+                    },
+                    {
+                        "title": "Trench",
+                        "id": "auton_inner_trench",
+                        "type": "number"
+                    },
+                    {
+                        "title": "Far",
+                        "id": "auton_inner_far",
                         "type": "number"
                     },
                 ]
@@ -90,6 +123,33 @@ const table = [
                         "type": "number"
                     },
                 ]
+            },
+            {
+                "title": "Inner Goal",
+                "id": "teleop_inner",
+                "type": "stack",
+                "children": [
+                    {
+                        "title": "Near",
+                        "id": "teleop_inner_near",
+                        "type": "number"
+                    },
+                    {
+                        "title": "Mid",
+                        "id": "teleop_inner_mid",
+                        "type": "number"
+                    },
+                    {
+                        "title": "Trench",
+                        "id": "teleop_inner_trench",
+                        "type": "number"
+                    },
+                    {
+                        "title": "Far",
+                        "id": "teleop_inner_far",
+                        "type": "number"
+                    },
+                ]
             }
         ]
     },
@@ -107,13 +167,13 @@ const table = [
     },
     {
         "title": "Climb?",
-        "id": "break",
+        "id": "climb",
         "type": "opts",
         "opts": ["No", "Yes"]
     },
     {
         "title": "Balance?",
-        "id": "break",
+        "id": "balance",
         "type": "opts",
         "opts": ["No", "Yes"]
     },

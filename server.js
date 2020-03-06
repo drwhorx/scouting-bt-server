@@ -53,6 +53,15 @@ io.on('connection', function (socket) {
             await conn.execute("ALTER TABLE `SCOUTING_DATA` ADD COLUMN `" + item.id + "` " + types[item.type]);
         }
     });
+    socket.on('metadata', async (obj) => {
+        await conn.execute("DROP TABLE `METADATA`");
+        await conn.execute("CREATE TABLE `METADATA`(`column` varchar(255) null, `option` varchar(255) null)");
+        for (let col of obj) {
+            for (let opt of col.opts) {
+                await conn.query("INSERT INTO `METADATA` (`column`, `option`) VALUES ('" + col.id + "', '" + opt + "')");
+            }
+        }
+    });
     socket.on("get", async () => {
         let results = (await conn.execute("SELECT * FROM SCOUTING_DATA"))[0];
         if (results.length == 0) {

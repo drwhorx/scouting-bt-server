@@ -15,8 +15,19 @@ function convert() {
 }
 
 function uploadColumns() {
+    let conf = confirm("Are you sure? This will erase all current data");
+    if (!conf) return;
     let columns = convert();
     socket.emit("upload", columns);
+    socket.emit("metadata", columns.filter(e => e.opts != undefined && e.id != "alliance"));
+    caught({
+        headers: true,
+        values: columns.map(e => {
+            return {
+                Field: e.id
+            }
+        })
+    })
 }
 
 function saveData() {
@@ -37,8 +48,8 @@ function saveData() {
                 return false;
             return true;
         };
-        let valids = values.map((e, i) => valid(e.innerText, titles[i]));
-        if (valids.contains(false))
+        let valids = values.map((e, i) => valid(titles[i].innerText, e.innerText));
+        if (valids.includes(false))
             return alert("Invalid datum at row " + r + " column " + valids.indexOf(false) + "!");
         for (let i = 0; i < values.length; i++) {
             obj[titles[i].innerText] = values[i].innerText;
@@ -96,7 +107,7 @@ function insertRow() {
     let headers = document.getElementById("headers").children;
     for (let i = 1; i < headers.length; i++) {
         let element = row.insertCell();
-        let obj = table.flatten().find(e => e.id == headers[i].innerText);
+        let obj = convert().find(e => e.id == headers[i].innerText);
         let event = (function (item) {
             return {
                 call: (e) => {
@@ -175,9 +186,9 @@ function getData() {
     socket.emit("get");
 }
 
-socket.on("catch", (data) => {
-    let table = document.getElementById("table");
-    table.innerHTML = "<tr id=\"headers\"></tr>";
+const caught = (data) => {
+    let tbl = document.getElementById("table");
+    tbl.innerHTML = "<tr id=\"headers\"></tr>";
     let headers = document.getElementById("headers");
     headers.insertCell();
     if (data.headers) {
@@ -200,7 +211,7 @@ socket.on("catch", (data) => {
         button.onclick = insertRow;
         button.classList.add("add");
         button.innerText = "+";
-        return table.insertRow().insertCell().appendChild(button);
+        return tbl.insertRow().insertCell().appendChild(button);
     }
     for (let title in data[0]) {
         let td = document.createElement("td");
@@ -214,7 +225,7 @@ socket.on("catch", (data) => {
         td.onclick = event.call
     }
     for (let row of data) {
-        let rowElement = table.insertRow();
+        let rowElement = tbl.insertRow();
         let del = rowElement.insertCell();
         del.classList.add("del");
         let button = document.createElement("button");
@@ -245,8 +256,9 @@ socket.on("catch", (data) => {
     button.onclick = insertRow;
     button.classList.add("add");
     button.innerText = "+";
-    table.insertRow().insertCell().appendChild(button);
-});
+    tbl.insertRow().insertCell().appendChild(button);
+};
+socket.on("catch", caught);
 
 window.onload = () => {
 
