@@ -5,7 +5,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var conn = mysql.createPool({
-    host: '169.254.55.30',
+    host: 'localhost',
     user: "5530",
     password: "larry5530",
     database: 'SCOUTING_DATA'
