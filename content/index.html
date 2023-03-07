@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/jquery-3.6.3.min.js"></script>
+    <script src="js/main.js"></script>
+</head>
+
+<body>
+    <div id="wrapper">
+        <div id="title">5530 Scouting</div>
+        
+        <div class="group">
+            <input id="team" type="text" placeholder="Team #">
+            <input id="match" type="text" placeholder="Match #">
+
+            <div id="alliance" class="toggle">
+                <div class="blue true">Blue</div>
+                <div class="red">Red</div>
+            </div>
+        </div>
+
+        <div class="auton group">
+            <h1>Auton</h1>
+            <h2>Moved?</h2>
+            <div id="auton_moved" class="toggle">
+                <div class="true">Yes</div>
+                <div>No</div>
+            </div>
+            <div class="cones group">
+                <h1>Cones</h1>
+                <h2>Low:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="auton_cones_low" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>Mid:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="auton_cones_mid" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>High:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="auton_cones_high" type="text">
+                    <div class="incr">+</div>
+                </div>
+            </div>
+            <div class="cubes group">
+                <h1>Cubes</h1>
+                <h2>Low:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="auton_cones_low" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>Mid:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="auton_cones_mid" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>High:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="auton_cones_high" type="text">
+                    <div class="incr">+</div>
+                </div>
+            </div>
+            <h2>Charge Station:</h2>
+            <div id="auton_station" class="toggle">
+                <div class="true">None</div>
+                <div>Docked</div>
+                <div>Engaged</div>
+            </div>
+        </div>
+
+        <div class="teleop group">
+            <h1>Teleop</h1>
+            <div class="cones group">
+                <h1>Cones</h1>
+                <h2>Low:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="teleop_cones_low" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>Mid:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="teleop_cones_mid" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>High:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="teleop_cones_high" type="text">
+                    <div class="incr">+</div>
+                </div>
+            </div>
+            <div class="cubes group">
+                <h1>Cubes</h1>
+                <h2>Low:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="teleop_cones_low" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>Mid:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="teleop_cones_mid" type="text">
+                    <div class="incr">+</div>
+                </div>
+                <h2>High:</h2>
+                <div class="number">
+                    <div class="decr">-</div>
+                    <input class="value" id="teleop_cones_high" type="text">
+                    <div class="incr">+</div>
+                </div>
+            </div>
+            <h2>Broke?</h2>
+            <div id="broke" class="toggle">
+                <div class="true">No</div>
+                <div>Yes</div>
+            </div>
+            <h2>Charge Station:</h2>
+            <div id="teleop_station" class="toggle">
+                <div class="true">None</div>
+                <div>Docked</div>
+                <div>Engaged</div>
+            </div>
+        </div>
+        <input id="notes" type="text" placeholder="Notes">
+        <div id="submit">Submit</div>
+    </div>
+</body>
+
+</html>

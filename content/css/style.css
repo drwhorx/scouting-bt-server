@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #666;
+    color: white;
+    font-weight: bold;
+    font-family: Helvetica;
+    user-select: none;
+}
+
+h1, h2 {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 6vw;
+    line-height: 6vw;
+}
+
+h2 {
+    font-size: 5vw;
+    line-height: 5vw;
+}
+
+input {
+    margin: 0;
+    padding: 0;
+    font-size: 6vw;
+    line-height: 10vw;
+    border-radius: 2vw;
+    text-align: center;
+    font-weight: bold;
+    outline: none;
+    box-shadow: 0 0 3vw #333;
+}
+
+#title {
+    font-size: 8vw;
+    text-align: center;
+}
+
+#wrapper {
+    padding: 3vw;
+    display: flex;
+    flex-direction: column;
+    gap: 3vw;
+}
+
+@media screen and (min-width: 50vh) {
+    #wrapper {
+        transform: scale(calc(100vw / 50vh));
+    }
+}
+
+.group {
+    display: flex;
+    flex-direction: column;
+    padding: 3vw 5vw;
+    box-shadow: 0 0 3vw #111;
+    border-radius: 2vw;
+    gap: 2vw;
+}
+
+.toggle, .number {
+    display: flex;
+    gap: 2vw;
+}
+
+.toggle > div {
+    flex: 1;
+    font-size: 5vw;
+    line-height: 12vw;
+    border-radius: 2vw;
+    text-align: center;
+    background-color: #444;
+    box-shadow: 0 0 3vw #333;
+}
+
+.toggle > div.true {
+    background-color: #888;
+}
+.toggle > .blue.true {
+    background-color: #4848d4;
+}
+.toggle > .red.true {
+    background-color: #d44848;
+}
+
+.number .value {
+    width: 30vw;
+}
+
+.incr, .decr {
+    width: 30vw;
+    font-size: 5vw;
+    line-height: 12vw;
+    background-color: #888;
+    box-shadow: 0 0 3vw #333;
+    border-radius: 2vw;
+    text-align: center;
+}
+
+#submit {
+    font-size: 6vw;
+    line-height: 12vw;
+    text-align: center;
+    background-color: #1bca1b;
+    box-shadow: 0 0 3vw #333;
+    border-radius: 2vw;
+}
